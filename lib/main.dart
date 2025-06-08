@@ -116,138 +116,241 @@ class _RunHomePageState extends State<RunHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate pace: minutes per km
-    final pace = distanceKm > 0 && runDuration.inSeconds > 0
-        ? (runDuration.inSeconds / 60) / distanceKm
-        : 0;
+    // Get latest session for display
+    final latestSession = testSessions.isNotEmpty ? testSessions.first : null;
 
-    // Example pace goal for coloring (6 min/km)
-    const double paceGoal = 6.0;
-
-    // Determine color based on pace vs goal
-    Color paceColor;
-    if (!isRunning) {
-      paceColor = Colors.grey;
-    } else if (pace == 0) {
-      paceColor = Colors.blueAccent;
-    } else if (pace <= paceGoal) {
-      paceColor = Colors.green;
-    } else {
-      paceColor = Colors.red;
+    // Calculate pace for latest session
+    String pace = '--';
+    if (latestSession != null) {
+      final distance = (latestSession['distance_km'] ?? 0) is num
+          ? (latestSession['distance_km'] as num)
+          : 0.0;
+      final duration = (latestSession['duration_sec'] ?? 0) is num
+          ? (latestSession['duration_sec'] as num)
+          : 0.0;
+      if (distance > 0) {
+        final paceSec = duration / distance;
+        final min = (paceSec ~/ 60).toString().padLeft(2, '0');
+        final sec = (paceSec % 60).toInt().toString().padLeft(2, '0');
+        pace = '$min:$sec min/km';
+      }
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Run With Me - Dashboard'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFDBEAFE), Color(0xFFE9D5FF)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: Column(
           children: [
-            // Top row with three colored stat cards
+            // Main dashboard row
             Expanded(
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  // Left Data Blocks
                   Expanded(
-                    child: _StatCard(
-                      icon: Icons.timer,
-                      label: 'Time',
-                      value: _formatDuration(runDuration),
-                      color: Colors.deepPurple.shade300,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _StatCard(
+                          icon: Icons.directions_run,
+                          label: 'Distance (KM)',
+                          value: latestSession != null
+                              ? (latestSession['distance_km'] ?? '--')
+                                    .toString()
+                              : '--',
+                          color: Colors.indigo.shade400,
+                        ),
+                        const SizedBox(height: 24),
+                        _StatCard(
+                          icon: Icons.timer,
+                          label: 'Time',
+                          value: latestSession != null
+                              ? Duration(
+                                  seconds:
+                                      (latestSession['duration_sec'] ?? 0)
+                                          as int,
+                                ).toString().split('.').first.padLeft(8, "0")
+                              : '--:--:--',
+                          color: Colors.indigo.shade400,
+                        ),
+                        const SizedBox(height: 24),
+                        _StatCard(
+                          icon: Icons.speed,
+                          label: 'Pace',
+                          value: pace,
+                          color: Colors.indigo.shade400,
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: 32),
+                  // Center Avatar
                   Expanded(
-                    child: _StatCard(
-                      icon: Icons.directions_run,
-                      label: 'Distance',
-                      value: '${distanceKm.toStringAsFixed(2)} km',
-                      color: Colors.blue.shade300,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: 192,
+                              height: 192,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFF8B5CF6),
+                                    Color(0xFF6366F1),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.deepPurple.withOpacity(0.3),
+                                    blurRadius: 24,
+                                    spreadRadius: 2,
+                                  ),
+                                ],
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  'A & E',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 48,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // Glowing pulse
+                            Positioned.fill(
+                              child: IgnorePointer(
+                                child: AnimatedContainer(
+                                  duration: const Duration(seconds: 2),
+                                  curve: Curves.easeInOut,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.purple.withOpacity(0.2),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          testUser['name'] ?? '',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Goal: ${testGoal['distance'] ?? ''} @ ${testGoal['target_pace'] ?? ''} min/km',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black54,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          testGoal['notes'] ?? '',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black45,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Your AI-powered running companion. Track your progress, set goals, and run together!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16, color: Colors.black54),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: 32),
+                  // Right Side Controls
                   Expanded(
-                    child: _StatCard(
-                      icon: Icons.speed,
-                      label: 'Pace',
-                      value: pace > 0
-                          ? '${pace.toStringAsFixed(2)} min/km'
-                          : '--',
-                      color: paceColor,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.indigo.shade600,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 24),
+                            minimumSize: const Size(double.infinity, 0),
+                          ),
+                          child: const Text(
+                            'RUN',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        _StatCard(
+                          icon: Icons.flag,
+                          label: 'Goal',
+                          value: (testGoal['distance'] ?? '').toString(),
+                          color: Colors.indigo.shade400,
+                        ),
+                        const SizedBox(height: 24),
+                        _StatCard(
+                          icon: Icons.record_voice_over,
+                          label: 'Coaching',
+                          value: 'Paused',
+                          color: Colors.red.shade400,
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-
-            const SizedBox(height: 30),
-
-            // Pace progress bar showing performance against goal
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Pace Goal: $paceGoal min/km',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+            // Session history (below dashboard)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Session History',
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                ),
-                const SizedBox(height: 8),
-                LinearProgressIndicator(
-                  value: isRunning && pace > 0
-                      ? (pace <= paceGoal ? 1 - (pace / paceGoal) : 0)
-                      : 0,
-                  minHeight: 14,
-                  backgroundColor: Colors.grey.shade300,
-                  valueColor: AlwaysStoppedAnimation(paceColor),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 40),
-
-            // Big start/stop button, color changes based on running state
-            ElevatedButton.icon(
-              onPressed: isRunning ? _stopRun : _startRun,
-              icon: Icon(isRunning ? Icons.stop : Icons.play_arrow),
-              label: Text(isRunning ? 'Stop Run' : 'Start Run'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 60),
-                textStyle: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-                backgroundColor: isRunning ? Colors.redAccent : Colors.green,
+                  const SizedBox(height: 8),
+                  ...testSessions.map(
+                    (session) => ListTile(
+                      leading: const Icon(Icons.calendar_today),
+                      title: Text(
+                        '${session['date'] ?? ''} - ${session['distance_km'] ?? ''} km',
+                      ),
+                      subtitle: Text(
+                        'Time: '
+                        '${Duration(seconds: ((session['duration_sec'] ?? 0) is int ? session['duration_sec'] : (session['duration_sec'] ?? 0).toInt())).toString().split('.').first.padLeft(8, "0")}, '
+                        'Avg HR: ${session['avg_hr'] ?? ''}',
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Audio coaching controls: play/pause button + label
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  iconSize: 50,
-                  icon: Icon(
-                    isAudioPlaying
-                        ? Icons.pause_circle_filled
-                        : Icons.play_circle_fill,
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  onPressed: isRunning ? _toggleAudio : null,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  isAudioPlaying ? 'Coaching On' : 'Coaching Paused',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
             ),
           ],
         ),
@@ -306,3 +409,49 @@ class _StatCard extends StatelessWidget {
     );
   }
 }
+
+// --- Test Data for Simulation (converted from JS) ---
+
+const testUser = {
+  'id': 'user_12345',
+  'email': 'testuser@example.com',
+  'name': 'Erika Tester',
+};
+
+const testGoal = {
+  'distance': 'half-marathon',
+  'target_pace': '5:50',
+  'notes': 'Prepare for race day',
+};
+
+const testSessions = [
+  {
+    'id': 'sess1',
+    'user_id': 'user_12345',
+    'date': '2025-06-07',
+    'distance_km': 7.2,
+    'duration_sec': 2600, // 43:20
+    'avg_hr': 152,
+  },
+  {
+    'id': 'sess2',
+    'user_id': 'user_12345',
+    'date': '2025-06-06',
+    'distance_km': 4.5,
+    'duration_sec': 1580, // 26:20
+    'avg_hr': 140,
+  },
+  {
+    'id': 'sess3',
+    'user_id': 'user_12345',
+    'date': '2025-06-04',
+    'distance_km': 10.1,
+    'duration_sec': 3920, // 1:05:20
+    'avg_hr': 160,
+  },
+];
+
+const testHeartRateTrend = {
+  'labels': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  'values': [145, 152, 138, 162, 148, 157, 149],
+};

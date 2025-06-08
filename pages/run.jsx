@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from 'next/router';
+import { TEST_USER, TEST_SESSIONS, TEST_GOAL, TEST_HEART_RATE_TREND } from "@/lib/testSessions";
 
 export default function Run() {
   const [isRunning, setIsRunning] = useState(false);
@@ -14,17 +14,10 @@ export default function Run() {
   // Simulate distance increase: assume 10 km/h pace when running
   const paceKmPerSec = 10 / 3600;
 
+  // Use hardcoded user for testing
   useEffect(() => {
-    async function checkSession() {
-      const { data } = await supabase.auth.getSession();
-      if (!data?.session) {
-        router.push('/login');
-      } else {
-        setUser(data.session.user);
-      }
-    }
-    checkSession();
-  }, [router]);
+    setUser(TEST_USER);
+  }, []);
 
   useEffect(() => {
     if (isRunning) {
@@ -107,6 +100,7 @@ export default function Run() {
 
   if (!user) return <p>Loading...</p>;
 
+  // Example: Display test session history below the run controls
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-green-100 to-blue-100 px-6 py-12 text-center space-y-8">
       <h1 className="text-4xl font-extrabold text-gray-800">Run</h1>
@@ -168,6 +162,19 @@ export default function Run() {
           </button>
         </div>
         {saveStatus && <div className="mt-4 text-center text-green-600">{saveStatus}</div>}
+      </div>
+      <div className="mt-12 w-full max-w-xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4 text-left">Test Session History</h2>
+        <ul className="space-y-2">
+          {TEST_SESSIONS.map((session) => (
+            <li key={session.id} className="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+              <span className="font-semibold">{session.date}</span>
+              <span>{session.distance_km} km</span>
+              <span>{Math.floor(session.duration_sec / 60)} min</span>
+              <span>Avg HR: {session.avg_hr}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
