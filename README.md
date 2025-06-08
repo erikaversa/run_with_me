@@ -27,3 +27,10 @@ Welcome to the development roadmap for **Run With Me**, the personalized running
   │   └── stat_tile.dart
   └── models/
       └── run_data.dart
+  ```
+
+## 📄 Code Citations & Licensing
+
+- All reused or adapted code is cited in a dedicated [`Code Citations`](./Code%20Citations.md) document.
+- Example: Portions of the UI and select logic adapted from [emileypalmquist/run-training-app](https://github.com/emileypalmquist/run-training-app/blob/499fd19369c19c99c292e84d2218bc4815e36a0c/runner-frontend/index.html) under the MIT License.
+- The MIT license and copyright notice are included as required. See [LICENSE](./LICENSE).
