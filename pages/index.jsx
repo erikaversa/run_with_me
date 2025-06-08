@@ -53,3 +53,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+// Only keep this index.jsx file as the home page. Remove or rename any index.js, index.tsx, or index.ts files in the pages directory to avoid conflicts.
