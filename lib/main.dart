@@ -289,17 +289,18 @@ class _RunHomePageState extends State<RunHomePage> {
                         ElevatedButton(
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.indigo.shade600,
+                            backgroundColor:
+                                Colors.green.shade600, // RUN button in green
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32),
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 24),
-                            minimumSize: const Size(double.infinity, 0),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            minimumSize: const Size(0, 0),
                           ),
                           child: const Text(
                             'RUN',
                             style: TextStyle(
-                              fontSize: 28,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
@@ -310,14 +311,14 @@ class _RunHomePageState extends State<RunHomePage> {
                           icon: Icons.flag,
                           label: 'Goal',
                           value: (testGoal['distance'] ?? '').toString(),
-                          color: Colors.indigo.shade400,
+                          color: Colors.yellow.shade700, // Goal in yellow
                         ),
                         const SizedBox(height: 24),
                         _StatCard(
                           icon: Icons.record_voice_over,
                           label: 'Coaching',
                           value: 'Paused',
-                          color: Colors.red.shade400,
+                          color: Colors.red.shade700, // Coaching in red
                         ),
                       ],
                     ),
@@ -336,19 +337,28 @@ class _RunHomePageState extends State<RunHomePage> {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 8),
-                  ...testSessions.map(
-                    (session) => ListTile(
+                  ...testSessions.map((session) {
+                    final durationSec = session['duration_sec'];
+                    int durationInt = 0;
+                    if (durationSec is int) {
+                      durationInt = durationSec;
+                    } else if (durationSec is double) {
+                      durationInt = durationSec.toInt();
+                    } else {
+                      durationInt = int.tryParse(durationSec.toString()) ?? 0;
+                    }
+                    return ListTile(
                       leading: const Icon(Icons.calendar_today),
                       title: Text(
                         '${session['date'] ?? ''} - ${session['distance_km'] ?? ''} km',
                       ),
                       subtitle: Text(
                         'Time: '
-                        '${Duration(seconds: ((session['duration_sec'] ?? 0) is int ? session['duration_sec'] : (session['duration_sec'] ?? 0).toInt())).toString().split('.').first.padLeft(8, "0")}, '
+                        '${Duration(seconds: durationInt).toString().split('.').first.padLeft(8, "0")}, '
                         'Avg HR: ${session['avg_hr'] ?? ''}',
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ],
               ),
             ),
