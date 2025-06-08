@@ -158,31 +158,77 @@ class _RunHomePageState extends State<RunHomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CircleButton(
-                          label: 'Distance',
-                          value: latestSession != null
-                              ? (latestSession['distance_km'] ?? '--')
-                                    .toString()
-                              : '--',
-                          color: Colors.blue.shade500,
+                        Container(
+                          width: 64,
+                          height: 64,
+                          margin: const EdgeInsets.only(bottom: 24),
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(
+                                255,
+                                33,
+                                226,
+                                243,
+                              ),
+                              shape: const CircleBorder(),
+                              padding: EdgeInsets.zero,
+                              minimumSize: const Size(64, 64),
+                            ),
+                            child: const Icon(
+                              Icons.directions_run,
+                              color: Colors.white,
+                              size: 32,
+                            ),
+                          ),
                         ),
-                        const SizedBox(height: 24),
-                        CircleButton(
-                          label: 'Time',
-                          value: latestSession != null
-                              ? Duration(
-                                  seconds:
-                                      (latestSession['duration_sec'] ?? 0)
-                                          as int,
-                                ).toString().split('.').first.padLeft(8, "0")
-                              : '--:--:--',
-                          color: Colors.blue.shade500,
+                        Container(
+                          width: 64,
+                          height: 64,
+                          margin: const EdgeInsets.only(bottom: 24),
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(
+                                255,
+                                33,
+                                226,
+                                243,
+                              ),
+                              shape: const CircleBorder(),
+                              padding: EdgeInsets.zero,
+                              minimumSize: const Size(64, 64),
+                            ),
+                            child: const Icon(
+                              Icons.timer,
+                              color: Colors.white,
+                              size: 32,
+                            ), // or your value
+                          ),
                         ),
-                        const SizedBox(height: 24),
-                        CircleButton(
-                          label: 'Pace',
-                          value: pace,
-                          color: Colors.blue.shade500,
+                        Container(
+                          width: 64,
+                          height: 64,
+                          margin: const EdgeInsets.only(bottom: 24),
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(
+                                255,
+                                33,
+                                226,
+                                243,
+                              ),
+                              shape: const CircleBorder(),
+                              padding: EdgeInsets.zero,
+                              minimumSize: const Size(64, 64),
+                            ),
+                            child: const Icon(
+                              Icons.speed,
+                              color: Colors.white,
+                              size: 32,
+                            ), // or your value
+                          ),
                         ),
                       ],
                     ),
@@ -284,7 +330,6 @@ class _RunHomePageState extends State<RunHomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Circular Goal button (winner cup)
                         Container(
                           width: 64,
                           height: 64,
@@ -304,7 +349,6 @@ class _RunHomePageState extends State<RunHomePage> {
                             ),
                           ),
                         ),
-                        // Circular Coaching (Paused) button
                         Container(
                           width: 64,
                           height: 64,
@@ -324,7 +368,6 @@ class _RunHomePageState extends State<RunHomePage> {
                             ),
                           ),
                         ),
-                        // Circular RUN button at the bottom
                         Container(
                           width: 64,
                           height: 64,
