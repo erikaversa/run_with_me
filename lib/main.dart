@@ -21,6 +21,9 @@ class RunWithMeApp extends StatelessWidget {
           bodyMedium: TextStyle(fontSize: 16),
         ),
       ),
+      // To change the initial page, update the 'home:' property in MaterialApp.
+      // For example, to use a different page:
+      // home: const AnotherPage(),
       home: const RunHomePage(),
     );
   }
@@ -81,14 +84,21 @@ class _RunHomePageState extends State<RunHomePage> {
   }
 
   /// Toggles audio coaching play/pause
-  void _toggleAudio() {
+  void _toggleAudio() async {
     if (!isRunning) return; // No audio controls if not running
 
     setState(() {
       isAudioPlaying = !isAudioPlaying;
     });
 
-    // TODO: Integrate actual audio play/pause functionality here
+    // Example: Integrate audio play/pause logic here
+    // You could use a package like 'audioplayers' or 'just_audio'
+    // For example:
+    // if (isAudioPlaying) {
+    //   await audioPlayer.resume();
+    // } else {
+    //   await audioPlayer.pause();
+    // }
   }
 
   /// Formats a Duration as hh:mm:ss or mm:ss string
@@ -161,7 +171,9 @@ class _RunHomePageState extends State<RunHomePage> {
                     child: _StatCard(
                       icon: Icons.speed,
                       label: 'Pace',
-                      value: pace > 0 ? '${pace.toStringAsFixed(2)} min/km' : '--',
+                      value: pace > 0
+                          ? '${pace.toStringAsFixed(2)} min/km'
+                          : '--',
                       color: paceColor,
                     ),
                   ),
@@ -177,7 +189,10 @@ class _RunHomePageState extends State<RunHomePage> {
               children: [
                 Text(
                   'Pace Goal: $paceGoal min/km',
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 LinearProgressIndicator(
@@ -200,7 +215,10 @@ class _RunHomePageState extends State<RunHomePage> {
               label: Text(isRunning ? 'Stop Run' : 'Start Run'),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 60),
-                textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                textStyle: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
                 backgroundColor: isRunning ? Colors.redAccent : Colors.green,
               ),
             ),
@@ -213,14 +231,21 @@ class _RunHomePageState extends State<RunHomePage> {
               children: [
                 IconButton(
                   iconSize: 50,
-                  icon: Icon(isAudioPlaying ? Icons.pause_circle_filled : Icons.play_circle_fill),
+                  icon: Icon(
+                    isAudioPlaying
+                        ? Icons.pause_circle_filled
+                        : Icons.play_circle_fill,
+                  ),
                   color: Theme.of(context).primaryColor,
                   onPressed: isRunning ? _toggleAudio : null,
                 ),
                 const SizedBox(width: 12),
                 Text(
                   isAudioPlaying ? 'Coaching On' : 'Coaching Paused',
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
