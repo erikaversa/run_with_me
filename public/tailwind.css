@@ -6,11 +6,17 @@
 .visible {
   visibility: visible;
 }
+.absolute {
+  position: absolute;
+}
 .relative {
   position: relative;
 }
 .static {
   position: static;
+}
+.col-span-4 {
+  grid-column: span 4 / span 4;
 }
 .mx-auto {
   margin-inline: auto;
@@ -41,6 +47,9 @@
 }
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-12 {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 .flex-col {
   flex-direction: column;
@@ -79,8 +88,14 @@
 .text-center {
   text-align: center;
 }
+.uppercase {
+  text-transform: uppercase;
+}
 .italic {
   font-style: italic;
+}
+.opacity-30 {
+  opacity: 30%;
 }
 .filter {
   filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
@@ -89,6 +104,10 @@
   transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, visibility, content-visibility, overlay, pointer-events;
   transition-timing-function: var(--tw-ease, ease);
   transition-duration: var(--tw-duration, 0s);
+}
+.select-none {
+  -webkit-user-select: none;
+  user-select: none;
 }
 .disabled\:opacity-50 {
   &:disabled {
