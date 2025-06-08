@@ -158,18 +158,16 @@ class _RunHomePageState extends State<RunHomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _StatCard(
-                          icon: Icons.directions_run,
-                          label: 'Distance (KM)',
+                        CircleButton(
+                          label: 'Distance',
                           value: latestSession != null
                               ? (latestSession['distance_km'] ?? '--')
                                     .toString()
                               : '--',
-                          color: Colors.indigo.shade400,
+                          color: Colors.blue.shade500,
                         ),
                         const SizedBox(height: 24),
-                        _StatCard(
-                          icon: Icons.timer,
+                        CircleButton(
                           label: 'Time',
                           value: latestSession != null
                               ? Duration(
@@ -178,14 +176,13 @@ class _RunHomePageState extends State<RunHomePage> {
                                           as int,
                                 ).toString().split('.').first.padLeft(8, "0")
                               : '--:--:--',
-                          color: Colors.indigo.shade400,
+                          color: Colors.blue.shade500,
                         ),
                         const SizedBox(height: 24),
-                        _StatCard(
-                          icon: Icons.speed,
+                        CircleButton(
                           label: 'Pace',
                           value: pace,
-                          color: Colors.indigo.shade400,
+                          color: Colors.blue.shade500,
                         ),
                       ],
                     ),
@@ -283,42 +280,69 @@ class _RunHomePageState extends State<RunHomePage> {
                   const SizedBox(width: 32),
                   // Right Side Controls
                   Expanded(
+                    flex: 2, // 20% width
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Colors.green.shade600, // RUN button in green
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
+                        // Circular Goal button (winner cup)
+                        Container(
+                          width: 64,
+                          height: 64,
+                          margin: const EdgeInsets.only(bottom: 24),
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.yellow.shade700,
+                              shape: const CircleBorder(),
+                              padding: EdgeInsets.zero,
+                              minimumSize: const Size(64, 64),
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            minimumSize: const Size(0, 0),
-                          ),
-                          child: const Text(
-                            'RUN',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
+                            child: const Icon(
+                              Icons.emoji_events,
                               color: Colors.white,
+                              size: 32,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 24),
-                        _StatCard(
-                          icon: Icons.flag,
-                          label: 'Goal',
-                          value: (testGoal['distance'] ?? '').toString(),
-                          color: Colors.yellow.shade700, // Goal in yellow
+                        // Circular Coaching (Paused) button
+                        Container(
+                          width: 64,
+                          height: 64,
+                          margin: const EdgeInsets.only(bottom: 24),
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red.shade700,
+                              shape: const CircleBorder(),
+                              padding: EdgeInsets.zero,
+                              minimumSize: const Size(64, 64),
+                            ),
+                            child: const Icon(
+                              Icons.pause,
+                              color: Colors.white,
+                              size: 32,
+                            ),
+                          ),
                         ),
-                        const SizedBox(height: 24),
-                        _StatCard(
-                          icon: Icons.record_voice_over,
-                          label: 'Coaching',
-                          value: 'Paused',
-                          color: Colors.red.shade700, // Coaching in red
+                        // Circular RUN button at the bottom
+                        Container(
+                          width: 64,
+                          height: 64,
+                          margin: const EdgeInsets.only(bottom: 24),
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green.shade600,
+                              shape: const CircleBorder(),
+                              padding: EdgeInsets.zero,
+                              minimumSize: const Size(64, 64),
+                            ),
+                            child: const Icon(
+                              Icons.directions_run,
+                              color: Colors.white,
+                              size: 32,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -370,50 +394,74 @@ class _RunHomePageState extends State<RunHomePage> {
 }
 
 /// A colored card widget showing an icon, a label, and a value (e.g. Time, Distance)
-class _StatCard extends StatelessWidget {
-  final IconData icon;
+class CircleButton extends StatelessWidget {
   final String label;
   final String value;
   final Color color;
+  final Color textColor;
+  final VoidCallback? onPressed;
+  final IconData? icon;
 
-  const _StatCard({
-    required this.icon,
+  const CircleButton({
+    super.key,
     required this.label,
     required this.value,
     required this.color,
+    this.textColor = Colors.white,
+    this.onPressed,
+    this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: color.withOpacity(0.85),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 6,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 48, color: Colors.white),
-            const SizedBox(height: 12),
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(48),
+        onTap: onPressed,
+        child: Container(
+          width: 96,
+          height: 96,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: color.withOpacity(0.3),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
               ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.white70,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
+            ],
+          ),
+          child: Center(
+            child: icon != null
+                ? Icon(icon, color: textColor, size: 36)
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        label,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
+                          letterSpacing: 1.2,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        value,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+          ),
         ),
       ),
     );
