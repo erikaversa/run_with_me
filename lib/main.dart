@@ -141,7 +141,10 @@ class _RunHomePageState extends State<RunHomePage> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFDBEAFE), Color(0xFFE9D5FF)],
+            colors: [
+              Color(0xFF18181B),
+              Color(0xFF27272A),
+            ], // almost black gradient
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -156,6 +159,7 @@ class _RunHomePageState extends State<RunHomePage> {
                 children: [
                   // Left Data Blocks
                   Expanded(
+                    flex: 2, // Left side
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -193,6 +197,7 @@ class _RunHomePageState extends State<RunHomePage> {
                   const SizedBox(width: 32),
                   // Center Avatar
                   Expanded(
+                    flex: 3, // Center is slightly wider
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -261,7 +266,7 @@ class _RunHomePageState extends State<RunHomePage> {
                   const SizedBox(width: 32),
                   // Right Side Controls
                   Expanded(
-                    flex: 2, // 20% width
+                    flex: 2, // Right side
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -299,7 +304,10 @@ class _RunHomePageState extends State<RunHomePage> {
                 children: [
                   Text(
                     'Session History',
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   ...testSessions.map((session) {
@@ -313,14 +321,24 @@ class _RunHomePageState extends State<RunHomePage> {
                       durationInt = int.tryParse(durationSec.toString()) ?? 0;
                     }
                     return ListTile(
-                      leading: const Icon(Icons.calendar_today),
+                      leading: const Icon(
+                        Icons.calendar_today,
+                        color: Colors.white,
+                      ),
                       title: Text(
                         '${session['date'] ?? ''} - ${session['distance_km'] ?? ''} km',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       subtitle: Text(
                         'Time: '
                         '${Duration(seconds: durationInt).toString().split('.').first.padLeft(8, "0")}, '
                         'Avg HR: ${session['avg_hr'] ?? ''}',
+                        style: const TextStyle(
+                          color: Color(0xFFCBD5E1),
+                        ), // slate-300
                       ),
                     );
                   }),
