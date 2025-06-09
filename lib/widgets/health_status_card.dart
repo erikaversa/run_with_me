@@ -3,75 +3,66 @@ import '../theme/app_colors.dart';
 import '../theme/app_text.dart';
 import '../utils/health_utils.dart';
 
+/// Card compatta che mostra battito cardiaco, VO₂ effort e colore zona
 class HealthStatusCard extends StatelessWidget {
   final int heartRate;
-  final int age;
-  final String gender;
+  final int vo2Effort; // in percentuale (%)
 
   const HealthStatusCard({
     super.key,
     required this.heartRate,
-    required this.age,
-    required this.gender,
+    required this.vo2Effort,
   });
 
   @override
   Widget build(BuildContext context) {
-    final maxHR = getMaxHeartRate(age, gender);
-    final voc = getVocPercentage(heartRate, maxHR);
-    final inZone = isInTargetZone(heartRate, maxHR);
-    final emoji = inZone ? '💚🫀' : '💔🫀';
-    final color = inZone ? AppColors.green : AppColors.red;
+    final zoneColor = getZoneColor(heartRate, vo2Effort);
 
-    return Card(
-      color: color.withOpacity(0.08),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 400),
-              child: Text(
-                emoji,
-                key: ValueKey(emoji),
-                style: const TextStyle(fontSize: 48),
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text('Health Monitor', style: AppText.heading),
-            const SizedBox(height: 16),
-            _infoRow('❤️ Heart Rate', '$heartRate bpm'),
-            _infoRow('🫁 VO₂ Effort', '${voc.toStringAsFixed(1)}%'),
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                inZone ? 'In Zone' : 'Out of Zone',
-                style: TextStyle(color: color, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: AppColors.background,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: zoneColor.withOpacity(0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _StatColumn(label: '❤️ BPM', value: '$heartRate'),
+          _StatColumn(label: 'VO₂ %', value: '$vo2Effort%'),
+          Icon(
+            Icons.circle,
+            color: zoneColor,
+            size: 18,
+            semanticLabel: 'Stato zona',
+          ),
+        ],
       ),
     );
   }
+}
 
-  Widget _infoRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: AppText.label),
-          Text(value, style: AppText.value),
-        ],
-      ),
+/// Widget interno per rappresentare ogni metrica
+class _StatColumn extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _StatColumn({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(label, style: AppText.label),
+        const SizedBox(height: 4),
+        Text(value, style: AppText.value.copyWith(fontWeight: FontWeight.bold)),
+      ],
     );
   }
 }

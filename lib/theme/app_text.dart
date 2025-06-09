@@ -7,10 +7,11 @@ class AppText {
     color: Colors.black87,
   );
 
-  static const TextStyle label = TextStyle(fontSize: 14, color: Colors.black54);
+  static const TextStyle label = TextStyle(fontSize: 14, color: Colors.black);
 
   static const TextStyle value = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
+    color: Colors.black,
   );
 }

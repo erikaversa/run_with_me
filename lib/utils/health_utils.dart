@@ -1,7 +1,15 @@
-int getMaxHeartRate(int age, String gender) =>
-    gender == 'female' ? 226 - age : 220 - age;
+import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 
-double getVocPercentage(int heartRate, int maxHR) => (heartRate / maxHR) * 100;
+/// Restituisce un colore in base ai valori di BPM e VO₂ %
+/// Donna: maxHR = 226 - età (stima standard)
+Color getZoneColor(int heartRate, int vo2Percent) {
+  final isHeartOk = heartRate >= 90 && heartRate <= 175;
+  final isVo2Ok = vo2Percent >= 50 && vo2Percent <= 90;
 
-bool isInTargetZone(int heartRate, int maxHR) =>
-    heartRate >= maxHR * 0.65 && heartRate <= maxHR * 0.85;
+  if (isHeartOk && isVo2Ok) {
+    return AppColors.green;
+  } else {
+    return AppColors.red;
+  }
+}

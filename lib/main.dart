@@ -246,36 +246,14 @@ class _RunHomePageState extends State<RunHomePage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 24),
-                        Text(
-                          testUser['name'] ?? '',
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
+                        const SizedBox(height: 12),
+                        // Insert HealthStatusCard in the freed space
+                        SizedBox(
+                          height: 100,
+                          child: HealthStatusCard(
+                            heartRate: 190,
+                            vo2Effort: 82,
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Goal: ${testGoal['distance'] ?? ''} @ ${testGoal['target_pace'] ?? ''} min/km',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black54,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          testGoal['notes'] ?? '',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.black45,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          'Your AI-powered running companion. Track your progress, set goals, and run together!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16, color: Colors.black54),
                         ),
                       ],
                     ),
@@ -311,18 +289,6 @@ class _RunHomePageState extends State<RunHomePage> {
                     ),
                   ),
                 ],
-              ),
-            ),
-            // Health status card (example usage)
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
-              ),
-              child: HealthStatusCard(
-                heartRate: 150,
-                age: 30,
-                gender: 'female',
               ),
             ),
             // Session history (below dashboard)
