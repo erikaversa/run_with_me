@@ -2,3 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body {
+  font-family: 'Noto Sans', 'Noto Color Emoji', Arial, sans-serif;
+}

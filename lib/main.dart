@@ -158,96 +158,33 @@ class _RunHomePageState extends State<RunHomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Distance button with value and emoji
-                        Container(
-                          width: 77,
-                          height: 77,
-                          margin: const EdgeInsets.only(bottom: 28),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromARGB(
-                                255,
-                                33,
-                                226,
-                                243,
-                              ),
-                              shape: const CircleBorder(),
-                              padding: EdgeInsets.zero,
-                              minimumSize: const Size(77, 77),
-                            ),
-                            child: Text(
-                              latestSession != null
-                                  ? '📏\n${latestSession['distance_km']} KM'
-                                  : '📏\n-- KM',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 19,
-                              ),
-                            ),
-                          ),
+                        ThreeDButton(
+                          onPressed: () {},
+                          label: latestSession != null
+                              ? '${latestSession['distance_km']} KM'
+                              : '-- KM',
+                          color: const Color.fromARGB(255, 33, 226, 243),
+                          textColor: Colors.black,
                         ),
-                        // Time button with value and emoji
-                        Container(
-                          width: 77,
-                          height: 77,
-                          margin: const EdgeInsets.only(bottom: 28),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromARGB(
-                                255,
-                                33,
-                                226,
-                                243,
-                              ),
-                              shape: const CircleBorder(),
-                              padding: EdgeInsets.zero,
-                              minimumSize: const Size(77, 77),
-                            ),
-                            child: Text(
-                              latestSession != null
-                                  ? '⏱️\n${Duration(seconds: (latestSession['duration_sec'] ?? 0) as int).toString().split('.').first}'
-                                  : '⏱️\n--:--:--',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 19,
-                              ),
-                            ),
-                          ),
+                        const SizedBox(height: 24),
+                        ThreeDButton(
+                          onPressed: () {},
+                          label: latestSession != null
+                              ? Duration(
+                                  seconds:
+                                      (latestSession['duration_sec'] ?? 0)
+                                          as int,
+                                ).toString().split('.').first
+                              : '--:--:--',
+                          color: const Color.fromARGB(255, 33, 226, 243),
+                          textColor: Colors.black,
                         ),
-                        // Pace button with value and emoji
-                        Container(
-                          width: 77,
-                          height: 77,
-                          margin: const EdgeInsets.only(bottom: 28),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromARGB(
-                                255,
-                                33,
-                                226,
-                                243,
-                              ),
-                              shape: const CircleBorder(),
-                              padding: EdgeInsets.zero,
-                              minimumSize: const Size(77, 77),
-                            ),
-                            child: Text(
-                              '⚡\n$pace',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 19,
-                              ),
-                            ),
-                          ),
+                        const SizedBox(height: 24),
+                        ThreeDButton(
+                          onPressed: () {},
+                          label: pace,
+                          color: const Color.fromARGB(255, 33, 226, 243),
+                          textColor: Colors.black,
                         ),
                       ],
                     ),
@@ -349,69 +286,25 @@ class _RunHomePageState extends State<RunHomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Goal button with value and emoji
-                        Container(
-                          width: 77,
-                          height: 77,
-                          margin: const EdgeInsets.only(bottom: 28),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.yellow.shade700,
-                              shape: const CircleBorder(),
-                              padding: EdgeInsets.zero,
-                              minimumSize: const Size(77, 77),
-                            ),
-                            child: const Text(
-                              '🏆\n21.1 KM',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 19,
-                              ),
-                            ),
-                          ),
+                        ThreeDButton(
+                          onPressed: () {},
+                          label: '🏆\n21.1 KM',
+                          color: Colors.yellow.shade700,
+                          textColor: Colors.black,
                         ),
-                        // Paused button
-                        Container(
-                          width: 77,
-                          height: 77,
-                          margin: const EdgeInsets.only(bottom: 28),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red.shade700,
-                              shape: const CircleBorder(),
-                              padding: EdgeInsets.zero,
-                              minimumSize: const Size(77, 77),
-                            ),
-                            child: const Icon(
-                              Icons.pause,
-                              color: Colors.white,
-                              size: 38,
-                            ),
-                          ),
+                        const SizedBox(height: 24),
+                        ThreeDButton(
+                          onPressed: () {},
+                          label: '⏸️',
+                          color: Colors.red.shade700,
+                          textColor: Colors.black,
                         ),
-                        // Run button
-                        Container(
-                          width: 77,
-                          height: 77,
-                          margin: const EdgeInsets.only(bottom: 28),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green.shade600,
-                              shape: const CircleBorder(),
-                              padding: EdgeInsets.zero,
-                              minimumSize: const Size(77, 77),
-                            ),
-                            child: const Icon(
-                              Icons.directions_run,
-                              color: Colors.white,
-                              size: 38,
-                            ),
-                          ),
+                        const SizedBox(height: 24),
+                        ThreeDButton(
+                          onPressed: () {},
+                          label: '🏃',
+                          color: Colors.green.shade600,
+                          textColor: Colors.black,
                         ),
                       ],
                     ),
@@ -530,6 +423,69 @@ class CircleButton extends StatelessWidget {
                       ),
                     ],
                   ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ThreeDButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String label;
+  final Color color;
+  final double elevation;
+  final double borderRadius;
+  final EdgeInsets padding;
+  final double width;
+  final double height;
+  final Color textColor;
+
+  const ThreeDButton({
+    super.key,
+    required this.onPressed,
+    required this.label,
+    this.color = Colors.blue,
+    this.elevation = 10.0,
+    this.borderRadius = 48.0, // match CircleButton
+    this.padding = const EdgeInsets.all(0),
+    this.width = 96, // match CircleButton
+    this.height = 96, // match CircleButton
+    this.textColor = Colors.black, // match CircleButton
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return PhysicalModel(
+      color: color,
+      elevation: elevation,
+      shadowColor: Colors.black87,
+      borderRadius: BorderRadius.circular(borderRadius),
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(borderRadius),
+        splashColor: Colors.white24,
+        highlightColor: Colors.white10,
+        child: Container(
+          width: width,
+          height: height,
+          alignment: Alignment.center,
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: textColor,
+              fontSize: 20, // match CircleButton
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.2,
+              shadows: const [
+                Shadow(
+                  color: Colors.black26,
+                  offset: Offset(2, 2),
+                  blurRadius: 4,
+                ),
+              ],
+            ),
           ),
         ),
       ),

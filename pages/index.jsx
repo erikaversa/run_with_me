@@ -1,7 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 
 export default function HomePage() {
+  const [isRunning, setIsRunning] = useState(false);
+  const [secondsElapsed, setSecondsElapsed] = useState(0);
+  const [distanceKm, setDistanceKm] = useState(0);
+  const [saveStatus, setSaveStatus] = useState("");
+
+  const handleFinishRun = () => {
+    // Logic for finishing the run
+  };
+
+  const handleSaveSession = () => {
+    // Logic for saving the session
+  };
+
+  // Simulation test data
+  const simulationSessions = [
+    { date: "2025-06-02", distance_km: 5.0, duration_min: 38, pace_min_per_km: "7:36" },
+    { date: "2025-06-03", distance_km: 6.2, duration_min: 45, pace_min_per_km: "7:15" },
+    { date: "2025-06-04", distance_km: 4.5, duration_min: 32, pace_min_per_km: "7:07" },
+    { date: "2025-06-05", distance_km: 5.8, duration_min: 42, pace_min_per_km: "7:14" },
+    { date: "2025-06-06", distance_km: 7.0, duration_min: 50, pace_min_per_km: "7:08" },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center px-4 md:px-12">
       {/* Container */}
@@ -52,7 +74,67 @@ export default function HomePage() {
             <p className="text-gray-500 uppercase tracking-wide font-semibold mb-2">Coaching</p>
             <p className="text-xl font-semibold text-red-600">Paused</p>
           </div>
+
+          {/* Control Buttons */}
+          <div className="mt-8 flex justify-center space-x-6 flex-wrap">
+            {!isRunning && (
+              <button
+                onClick={() => setIsRunning(true)}
+                className="px-8 py-4 text-lg bg-green-500 hover:bg-green-600 text-black rounded-xl font-semibold transition"
+              >
+                Start
+              </button>
+            )}
+            {isRunning && (
+              <button
+                onClick={() => setIsRunning(false)}
+                className="px-8 py-4 text-lg bg-yellow-500 hover:bg-yellow-600 text-black rounded-xl font-semibold transition"
+              >
+                Pause
+              </button>
+            )}
+            <button
+              onClick={() => {
+                setIsRunning(false);
+                setSecondsElapsed(0);
+                setDistanceKm(0);
+                setSaveStatus("");
+              }}
+              className="px-8 py-4 text-lg bg-red-500 hover:bg-red-600 text-black rounded-xl font-semibold transition"
+            >
+              Reset
+            </button>
+            <button
+              onClick={handleFinishRun}
+              className="px-8 py-4 text-lg bg-blue-600 hover:bg-blue-700 text-black rounded-xl font-semibold transition"
+              disabled={secondsElapsed === 0 || distanceKm === 0}
+            >
+              Finish Run
+            </button>
+            <button
+              onClick={handleSaveSession}
+              disabled={secondsElapsed === 0}
+              className="px-8 py-4 text-lg bg-blue-600 hover:bg-blue-700 text-black rounded-xl font-semibold transition disabled:opacity-50"
+            >
+              Save Session
+            </button>
+          </div>
         </div>
+      </div>
+
+      {/* Simulation Test Section */}
+      <div className="mt-12 w-full max-w-xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4 text-left">Simulation Test Sessions</h2>
+        <ul className="space-y-2">
+          {simulationSessions.map((session, idx) => (
+            <li key={idx} className="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+              <span className="font-semibold">{session.date}</span>
+              <span className="text-base font-bold">{session.distance_km} km</span>
+              <span className="text-base font-bold">{session.duration_min} min</span>
+              <span className="text-base font-bold">Pace: {session.pace_min_per_km} min/km</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
