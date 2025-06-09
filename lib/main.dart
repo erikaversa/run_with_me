@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'widgets/health_status_card.dart';
 
 void main() {
   runApp(const RunWithMeApp());
@@ -310,6 +311,18 @@ class _RunHomePageState extends State<RunHomePage> {
                     ),
                   ),
                 ],
+              ),
+            ),
+            // Health status card (example usage)
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
+              child: HealthStatusCard(
+                heartRate: 150,
+                age: 30,
+                gender: 'female',
               ),
             ),
             // Session history (below dashboard)
