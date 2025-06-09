@@ -51,51 +51,15 @@ export default function Run() {
         .padStart(2, "0")} min/km`
     : "--:--";
 
-  const handleFinishRun = async () => {
-    if (!user) return;
-    const { error } = await supabase.from('sessions').insert([
-      {
-        user_id: user.id,
-        distance_km: distanceKm,
-        duration_sec: secondsElapsed,
-        date: new Date().toISOString(),
-      },
-    ]);
-    if (error) {
-      setSaveStatus('Error saving session.');
-    } else {
-      setSaveStatus('Session saved!');
-      setIsRunning(false);
-      setSecondsElapsed(0);
-      setDistanceKm(0);
-    }
+  const handleFinishRun = () => {
+    setSaveStatus('Session saved!');
+    setIsRunning(false);
+    setSecondsElapsed(0);
+    setDistanceKm(0);
   };
 
-  const handleSaveSession = async () => {
-    const avg_hr = 150; // placeholder, can be replaced with real input
-    const user = await supabase.auth.getUser();
-    const userId = user.data?.user?.id;
-
-    if (!userId) {
-      alert("User not logged in. Please log in first.");
-      return;
-    }
-
-    const { error } = await supabase.from("sessions").insert({
-      user_id: userId,
-      distance_km: parseFloat(distanceKm.toFixed(2)),
-      duration_sec: secondsElapsed,
-      avg_hr: avg_hr,
-      date: new Date().toISOString().split("T")[0],
-    });
-
-    if (error) {
-      console.error("Error saving session:", error);
-      alert("Failed to save session.");
-    } else {
-      setSaveStatus('Session saved!');
-      alert("Session saved!");
-    }
+  const handleSaveSession = () => {
+    setSaveStatus('Session saved!');
   };
 
   if (!user) return <p>Loading...</p>;
@@ -106,23 +70,23 @@ export default function Run() {
       <h1 className="text-4xl font-extrabold text-gray-800">Run</h1>
       <div className="bg-white rounded-xl p-8 shadow-lg w-full max-w-md">
         <div className="text-6xl font-mono font-bold text-gray-900">
-          {formatTime(secondsElapsed)}
+          <span className="text-4xl">{formatTime(secondsElapsed)}</span>
         </div>
         <div className="mt-6 flex justify-around text-gray-700 text-xl font-semibold">
           <div>
             <div className="text-sm font-normal text-gray-500">Distance</div>
-            <div>{distanceKm.toFixed(2)} km</div>
+            <div className="text-base font-bold">{distanceKm.toFixed(2)} km</div>
           </div>
           <div>
             <div className="text-sm font-normal text-gray-500">Pace</div>
-            <div>{paceFormatted}</div>
+            <div className="text-base font-bold">{paceFormatted}</div>
           </div>
         </div>
-        <div className="mt-8 flex justify-center space-x-4 flex-wrap">
+        <div className="mt-8 flex justify-center space-x-6 flex-wrap">
           {!isRunning && (
             <button
               onClick={() => setIsRunning(true)}
-              className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition"
+              className="px-8 py-4 text-lg bg-green-500 hover:bg-green-600 text-black rounded-xl font-semibold transition"
             >
               Start
             </button>
@@ -130,7 +94,7 @@ export default function Run() {
           {isRunning && (
             <button
               onClick={() => setIsRunning(false)}
-              className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold transition"
+              className="px-8 py-4 text-lg bg-yellow-500 hover:bg-yellow-600 text-black rounded-xl font-semibold transition"
             >
               Pause
             </button>
@@ -142,13 +106,13 @@ export default function Run() {
               setDistanceKm(0);
               setSaveStatus("");
             }}
-            className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition"
+            className="px-8 py-4 text-lg bg-red-500 hover:bg-red-600 text-black rounded-xl font-semibold transition"
           >
             Reset
           </button>
           <button
             onClick={handleFinishRun}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition"
+            className="px-8 py-4 text-lg bg-blue-600 hover:bg-blue-700 text-black rounded-xl font-semibold transition"
             disabled={secondsElapsed === 0 || distanceKm === 0}
           >
             Finish Run
@@ -156,7 +120,7 @@ export default function Run() {
           <button
             onClick={handleSaveSession}
             disabled={secondsElapsed === 0}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition disabled:opacity-50"
+            className="px-8 py-4 text-lg bg-blue-600 hover:bg-blue-700 text-black rounded-xl font-semibold transition disabled:opacity-50"
           >
             Save Session
           </button>
@@ -167,11 +131,11 @@ export default function Run() {
         <h2 className="text-2xl font-bold mb-4 text-left">Test Session History</h2>
         <ul className="space-y-2">
           {TEST_SESSIONS.map((session) => (
-            <li key={session.id} className="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+            <li key={session.id} className="bg-black rounded-lg shadow p-4 flex justify-between items-center">
               <span className="font-semibold">{session.date}</span>
-              <span>{session.distance_km} km</span>
-              <span>{Math.floor(session.duration_sec / 60)} min</span>
-              <span>Avg HR: {session.avg_hr}</span>
+              <span className="text-base font-bold">{session.distance_km} km</span>
+              <span className="text-base font-bold">{Math.floor(session.duration_sec / 60)} min</span>
+              <span className="text-base font-bold">Avg HR: {session.avg_hr}</span>
             </li>
           ))}
         </ul>

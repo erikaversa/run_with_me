@@ -158,10 +158,11 @@ class _RunHomePageState extends State<RunHomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        // Distance button with value and emoji
                         Container(
-                          width: 64,
-                          height: 64,
-                          margin: const EdgeInsets.only(bottom: 24),
+                          width: 77,
+                          height: 77,
+                          margin: const EdgeInsets.only(bottom: 28),
                           child: ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
@@ -173,19 +174,26 @@ class _RunHomePageState extends State<RunHomePage> {
                               ),
                               shape: const CircleBorder(),
                               padding: EdgeInsets.zero,
-                              minimumSize: const Size(64, 64),
+                              minimumSize: const Size(77, 77),
                             ),
-                            child: const Icon(
-                              Icons.directions_run,
-                              color: Colors.white,
-                              size: 32,
+                            child: Text(
+                              latestSession != null
+                                  ? '📏\n${latestSession['distance_km']} KM'
+                                  : '📏\n-- KM',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 19,
+                              ),
                             ),
                           ),
                         ),
+                        // Time button with value and emoji
                         Container(
-                          width: 64,
-                          height: 64,
-                          margin: const EdgeInsets.only(bottom: 24),
+                          width: 77,
+                          height: 77,
+                          margin: const EdgeInsets.only(bottom: 28),
                           child: ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
@@ -197,19 +205,26 @@ class _RunHomePageState extends State<RunHomePage> {
                               ),
                               shape: const CircleBorder(),
                               padding: EdgeInsets.zero,
-                              minimumSize: const Size(64, 64),
+                              minimumSize: const Size(77, 77),
                             ),
-                            child: const Icon(
-                              Icons.timer,
-                              color: Colors.white,
-                              size: 32,
-                            ), // or your value
+                            child: Text(
+                              latestSession != null
+                                  ? '⏱️\n${Duration(seconds: (latestSession['duration_sec'] ?? 0) as int).toString().split('.').first}'
+                                  : '⏱️\n--:--:--',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 19,
+                              ),
+                            ),
                           ),
                         ),
+                        // Pace button with value and emoji
                         Container(
-                          width: 64,
-                          height: 64,
-                          margin: const EdgeInsets.only(bottom: 24),
+                          width: 77,
+                          height: 77,
+                          margin: const EdgeInsets.only(bottom: 28),
                           child: ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
@@ -221,13 +236,17 @@ class _RunHomePageState extends State<RunHomePage> {
                               ),
                               shape: const CircleBorder(),
                               padding: EdgeInsets.zero,
-                              minimumSize: const Size(64, 64),
+                              minimumSize: const Size(77, 77),
                             ),
-                            child: const Icon(
-                              Icons.speed,
-                              color: Colors.white,
-                              size: 32,
-                            ), // or your value
+                            child: Text(
+                              '⚡\n$pace',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 19,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -330,60 +349,67 @@ class _RunHomePageState extends State<RunHomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        // Goal button with value and emoji
                         Container(
-                          width: 64,
-                          height: 64,
-                          margin: const EdgeInsets.only(bottom: 24),
+                          width: 77,
+                          height: 77,
+                          margin: const EdgeInsets.only(bottom: 28),
                           child: ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.yellow.shade700,
                               shape: const CircleBorder(),
                               padding: EdgeInsets.zero,
-                              minimumSize: const Size(64, 64),
+                              minimumSize: const Size(77, 77),
                             ),
-                            child: const Icon(
-                              Icons.emoji_events,
-                              color: Colors.white,
-                              size: 32,
+                            child: const Text(
+                              '🏆\n21.1 KM',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 19,
+                              ),
                             ),
                           ),
                         ),
+                        // Paused button
                         Container(
-                          width: 64,
-                          height: 64,
-                          margin: const EdgeInsets.only(bottom: 24),
+                          width: 77,
+                          height: 77,
+                          margin: const EdgeInsets.only(bottom: 28),
                           child: ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red.shade700,
                               shape: const CircleBorder(),
                               padding: EdgeInsets.zero,
-                              minimumSize: const Size(64, 64),
+                              minimumSize: const Size(77, 77),
                             ),
                             child: const Icon(
                               Icons.pause,
                               color: Colors.white,
-                              size: 32,
+                              size: 38,
                             ),
                           ),
                         ),
+                        // Run button
                         Container(
-                          width: 64,
-                          height: 64,
-                          margin: const EdgeInsets.only(bottom: 24),
+                          width: 77,
+                          height: 77,
+                          margin: const EdgeInsets.only(bottom: 28),
                           child: ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green.shade600,
                               shape: const CircleBorder(),
                               padding: EdgeInsets.zero,
-                              minimumSize: const Size(64, 64),
+                              minimumSize: const Size(77, 77),
                             ),
                             child: const Icon(
                               Icons.directions_run,
                               color: Colors.white,
-                              size: 32,
+                              size: 38,
                             ),
                           ),
                         ),
