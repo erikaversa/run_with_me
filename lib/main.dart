@@ -54,61 +54,6 @@ class _RunHomePageState extends State<RunHomePage> {
   // Timer for updating run duration and distance every second
   Timer? _timer;
 
-  /// Starts the run: resets timer, distance and starts timer updates
-  void _startRun() {
-    setState(() {
-      isRunning = true;
-      runDuration = Duration.zero;
-      distanceKm = 0.0;
-      isAudioPlaying = true; // Start coaching audio
-    });
-
-    // Timer tick every 1 second: update duration and mock distance
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() {
-        runDuration += const Duration(seconds: 1);
-
-        // Simulate distance covered, e.g., 10 km/h = 2.78 m/s ~ 0.00278 km/s
-        // Adjust or replace with real GPS tracking later
-        distanceKm += 0.00278;
-      });
-    });
-  }
-
-  /// Stops the run and the timer, pauses audio coaching
-  void _stopRun() {
-    setState(() {
-      isRunning = false;
-      isAudioPlaying = false;
-    });
-    _timer?.cancel();
-  }
-
-  /// Toggles audio coaching play/pause
-  void _toggleAudio() async {
-    if (!isRunning) return; // No audio controls if not running
-
-    setState(() {
-      isAudioPlaying = !isAudioPlaying;
-    });
-
-    // Example: Integrate audio play/pause logic here
-    // You could use a package like 'audioplayers' or 'just_audio'
-    // For example:
-    // if (isAudioPlaying) {
-    //   await audioPlayer.resume();
-    // } else {
-    //   await audioPlayer.pause();
-    // }
-  }
-
-  /// Formats a Duration as hh:mm:ss or mm:ss string
-  String _formatDuration(Duration d) {
-    final minutes = d.inMinutes.remainder(60).toString().padLeft(2, '0');
-    final seconds = d.inSeconds.remainder(60).toString().padLeft(2, '0');
-    return '${d.inHours > 0 ? '${d.inHours}:' : ''}$minutes:$seconds';
-  }
-
   @override
   void dispose() {
     _timer?.cancel(); // Clean up timer on widget disposal

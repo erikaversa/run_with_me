@@ -32,30 +32,41 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
-  flutter_riverpod: ^2.3.6
-  flutter_hooks: ^0.20.0
-  hooks_riverpod: ^2.3.6
-  supabase_flutter: ^2.9.0
-  just_audio: ^0.9.36
-  geolocator: ^11.0.0
-  audio_session: ^0.1.15
+  # 🔌 Networking
+  http: ^1.2.1
+
+  # 🔊 Text-to-Speech
+  flutter_tts: ^4.2.3
+
+  # 🗃️ Local storage paths
   path_provider: ^2.1.2
+
+  # 🔁 State management
+  provider: ^6.1.1
+
+  # 🧭 GPS / Location
+  geolocator: ^14.0.1
+  geocoding: ^4.0.0
+
+  # ⏱️ Countdown timers
+  flutter_countdown_timer: ^4.1.0
+
+  # 🎨 UI
+  flutter_svg: ^2.0.10
+  cupertino_icons: ^1.0.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
 
-# The following section is specific to Flutter packages.
 flutter:
   uses-material-design: true
-
   assets:
     - fonts/
+    #- assets/images/
+    #- assets/sounds/
+    #- assets/fonts/
 
   fonts:
     - family: NotoSans
@@ -64,3 +75,5 @@ flutter:
     - family: NotoColorEmoji
       fonts:
         - asset: fonts/NotoColorEmoji.ttf
+
+
