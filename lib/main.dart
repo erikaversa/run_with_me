@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:run_with_me/voice_avatar.dart';
+import 'package:run_with_me/avatar_coach.dart';
 import 'widgets/health_status_card.dart';
 import 'services/voice_service.dart';
 
@@ -316,6 +319,95 @@ class _CircleStat extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class RunCoachPage extends StatefulWidget {
+  const RunCoachPage({super.key});
+
+  @override
+  State<RunCoachPage> createState() => _RunCoachPageState();
+}
+
+class _RunCoachPageState extends State<RunCoachPage> {
+  late final VoiceAvatar voice;
+  late final AvatarCoach coach;
+  Timer? timer;
+  int secondsElapsed = 0;
+  bool isRunning = false;
+
+  @override
+  void initState() {
+    super.initState();
+    voice = VoiceAvatar();
+    coach = AvatarCoach(voice);
+  }
+
+  void startRun() {
+    if (isRunning) return;
+    setState(() => isRunning = true);
+    voice.speak("Starting your run. I’m here with you.");
+    timer = Timer.periodic(const Duration(seconds: 30), (_) {
+      secondsElapsed += 30;
+      // Simulated values for now
+      final heartRate = 135 + (secondsElapsed ~/ 60); // increasing HR
+      final pace = 7.5; // constant pace
+      final time = Duration(seconds: secondsElapsed);
+      coach.evaluate(
+        heartRate: heartRate,
+        pace: pace,
+        elapsedTime: time,
+      );
+    });
+  }
+
+  void stopRun() {
+    if (!isRunning) return;
+    timer?.cancel();
+    setState(() => isRunning = false);
+    voice.speak("Run stopped. See you next time!");
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    voice.stop();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("Run With Me 🏃‍♀️", style: TextStyle(color: Colors.white, fontSize: 24)),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: isRunning ? null : startRun,
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(32),
+                backgroundColor: Colors.green,
+              ),
+              child: const Icon(Icons.play_arrow, color: Colors.white, size: 32),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: isRunning ? stopRun : null,
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(32),
+                backgroundColor: Colors.red,
+              ),
+              child: const Icon(Icons.stop, color: Colors.white, size: 32),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
