@@ -15,11 +15,36 @@ void main() {
     final coach = AvatarCoach(voice);
 
     final testCases = [
-      {'desc': 'Below safe zone', 'hr': 110, 'pace': 7.0, 'elapsed': Duration(minutes: 10)},
-      {'desc': 'In safe zone, good pace', 'hr': 130, 'pace': 6.5, 'elapsed': Duration(minutes: 20)},
-      {'desc': 'Above safe zone', 'hr': 155, 'pace': 6.0, 'elapsed': Duration(minutes: 15)},
-      {'desc': 'Too slow, in safe HR', 'hr': 135, 'pace': 9.0, 'elapsed': Duration(minutes: 25)},
-      {'desc': 'Goal reached', 'hr': 140, 'pace': 7.0, 'elapsed': Duration(minutes: 40)},
+      {
+        'desc': 'Below safe zone',
+        'hr': 110,
+        'pace': 7.0,
+        'elapsed': Duration(minutes: 10)
+      },
+      {
+        'desc': 'In safe zone, good pace',
+        'hr': 130,
+        'pace': 6.5,
+        'elapsed': Duration(minutes: 20)
+      },
+      {
+        'desc': 'Above safe zone',
+        'hr': 155,
+        'pace': 6.0,
+        'elapsed': Duration(minutes: 15)
+      },
+      {
+        'desc': 'Too slow, in safe HR',
+        'hr': 135,
+        'pace': 9.0,
+        'elapsed': Duration(minutes: 25)
+      },
+      {
+        'desc': 'Goal reached',
+        'hr': 140,
+        'pace': 7.0,
+        'elapsed': Duration(minutes: 40)
+      },
     ];
 
     for (var test in testCases) {

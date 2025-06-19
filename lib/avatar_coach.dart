@@ -12,7 +12,7 @@ class AvatarCoach {
 
   AvatarCoach(this.voice);
 
-  void evaluate({
+  Future<void> evaluate({
     required int heartRate,
     required double pace,
     required Duration elapsedTime,
