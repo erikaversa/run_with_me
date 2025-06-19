@@ -1,0 +1,34 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:run_with_me_voice/avatar_coach.dart';
+import 'package:run_with_me_voice/voice_avatar.dart';
+
+class ConsoleVoiceAvatar extends VoiceAvatar {
+  @override
+  Future<void> speak(String text) async {
+    print('Avatar says: $text');
+  }
+}
+
+void main() {
+  test('AvatarCoach gives correct feedback for various scenarios', () async {
+    final voice = ConsoleVoiceAvatar();
+    final coach = AvatarCoach(voice);
+
+    final testCases = [
+      {'desc': 'Below safe zone', 'hr': 110, 'pace': 7.0, 'elapsed': Duration(minutes: 10)},
+      {'desc': 'In safe zone, good pace', 'hr': 130, 'pace': 6.5, 'elapsed': Duration(minutes: 20)},
+      {'desc': 'Above safe zone', 'hr': 155, 'pace': 6.0, 'elapsed': Duration(minutes: 15)},
+      {'desc': 'Too slow, in safe HR', 'hr': 135, 'pace': 9.0, 'elapsed': Duration(minutes: 25)},
+      {'desc': 'Goal reached', 'hr': 140, 'pace': 7.0, 'elapsed': Duration(minutes: 40)},
+    ];
+
+    for (var test in testCases) {
+      print('--- ${test['desc']} ---');
+      await coach.evaluate(
+        heartRate: test['hr'] as int,
+        pace: test['pace'] as double,
+        elapsedTime: test['elapsed'] as Duration,
+      );
+    }
+  });
+}

@@ -1,6 +1,5 @@
-import 'dart:convert';
+import 'dart:io';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../lib/services/vocal_avatar.dart';
@@ -10,7 +9,7 @@ void main() {
 
   group('VocalAvatar Tests', () {
     setUpAll(() async {
-      final dir = await getApplicationDocumentsDirectory();
+      final dir = Directory.systemTemp.createTempSync();
       Hive.init(dir.path);
       await Hive.openBox('avatarBox');
     });
@@ -27,7 +26,8 @@ void main() {
       await avatar.save();
 
       final reloaded = await VocalAvatar.load();
-      expect(reloaded.vocab['mid']!.contains('Test phrase — keep running!'), true);
+      expect(
+          reloaded.vocab['mid']!.contains('Test phrase — keep running!'), true);
     });
 
     test('Feedback updates score and persists', () async {

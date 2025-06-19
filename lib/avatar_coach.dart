@@ -16,15 +16,15 @@ class AvatarCoach {
     required int heartRate,
     required double pace,
     required Duration elapsedTime,
-  }) {
+  }) async {
     if (heartRate > RunZone.maxSafeHR) {
-      voice.speak("Your heart rate is too high. Slow down.");
+      await voice.speak("Your heart rate is too high. Slow down.");
     } else if (heartRate < RunZone.minSafeHR || pace > RunZone.maxPace) {
-      voice.speak("Let’s pick up the pace. You're below your zone.");
+      await voice.speak("Let’s pick up the pace. You're below your zone.");
     } else if (elapsedTime >= RunZone.sessionGoalTime) {
-      voice.speak("Session goal reached. Great job!");
+      await voice.speak("Session goal reached. Great job!");
     } else {
-      voice.speak("Perfect rhythm. Stay in the zone.");
+      await voice.speak("Perfect rhythm. Stay in the zone.");
     }
   }
 }
