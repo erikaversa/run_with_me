@@ -55,9 +55,14 @@ dependencies:
   flutter_svg: ^2.0.10
   cupertino_icons: ^1.0.6
 
+  # Hive for local storage
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  path_provider: ^2.1.1
 
 
 flutter:

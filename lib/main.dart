@@ -5,8 +5,14 @@ import 'package:run_with_me_voice/avatar_coach.dart';
 import 'widgets/health_status_card.dart';
 import 'services/voice_service.dart';
 import 'services/vocal_avatar.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() => runApp(const RunWithMeApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox('avatarBox');
+  runApp(const RunWithMeApp());
+}
 
 class RunWithMeApp extends StatelessWidget {
   const RunWithMeApp({super.key});
@@ -26,7 +32,7 @@ class RunHomePage extends StatefulWidget {
 
 class _RunHomePageState extends State<RunHomePage> {
   final VoiceService voice = VoiceService();
-  final VocalAvatar vocalAvatar = VocalAvatar();
+  VocalAvatar? vocalAvatar;
   bool isRunning = false;
   bool isPaused = false;
   Duration runDuration = Duration.zero;
@@ -41,6 +47,9 @@ class _RunHomePageState extends State<RunHomePage> {
     super.initState();
     _stopwatch = Stopwatch();
     _ticker = Ticker(_onTick);
+    VocalAvatar.load().then((loaded) {
+      setState(() => vocalAvatar = loaded);
+    });
   }
 
   void _onTick(Duration elapsed) {
@@ -105,8 +114,10 @@ class _RunHomePageState extends State<RunHomePage> {
   }
 
   void _motivate() {
-    final phrase = vocalAvatar.choosePhrase('mid');
+    if (vocalAvatar == null) return;
+    final phrase = vocalAvatar!.choosePhrase('mid');
     voice.speak(phrase);
+    vocalAvatar!.save();
   }
 
   @override
