@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:run_with_me/voice_avatar.dart';
-import 'package:run_with_me/avatar_coach.dart';
+import 'package:run_with_me_voice/voice_avatar.dart';
+import 'package:run_with_me_voice/avatar_coach.dart';
 import 'widgets/health_status_card.dart';
 import 'services/voice_service.dart';
+import 'services/vocal_avatar.dart';
 
 void main() => runApp(const RunWithMeApp());
 
@@ -25,6 +26,7 @@ class RunHomePage extends StatefulWidget {
 
 class _RunHomePageState extends State<RunHomePage> {
   final VoiceService voice = VoiceService();
+  final VocalAvatar vocalAvatar = VocalAvatar();
   bool isRunning = false;
   bool isPaused = false;
   Duration runDuration = Duration.zero;
@@ -102,12 +104,17 @@ class _RunHomePageState extends State<RunHomePage> {
     return '${d.inHours > 0 ? '${d.inHours}:' : ''}$minutes:$seconds';
   }
 
+  void _motivate() {
+    final phrase = vocalAvatar.choosePhrase('mid');
+    voice.speak(phrase);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Run With Me')),
       body: Container(
-        color: Colors.black, // Set background to black
+        color: Colors.black,
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -171,11 +178,7 @@ class _RunHomePageState extends State<RunHomePage> {
                   icon: Icons.record_voice_over,
                   label: 'Motivate',
                   color: Colors.deepPurple,
-                  onPressed: () {
-                    voice.speak(
-                      "You are strong! Every step is progress. Keep going!",
-                    );
-                  },
+                  onPressed: _motivate,
                 ),
                 _CircleButton(
                   icon: isPaused ? Icons.play_arrow : Icons.pause,
@@ -184,8 +187,8 @@ class _RunHomePageState extends State<RunHomePage> {
                   onPressed: isRunning && !isPaused
                       ? _pauseRun
                       : isPaused
-                      ? _resumeRun
-                      : null,
+                          ? _resumeRun
+                          : null,
                 ),
                 _CircleButton(
                   icon: Icons.stop,
@@ -196,6 +199,12 @@ class _RunHomePageState extends State<RunHomePage> {
               ],
             ),
             const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                voice.speak("This is a test of the avatar voice.");
+              },
+              child: const Text("Test Voice"),
+            ),
           ],
         ),
       ),
@@ -384,7 +393,8 @@ class _RunCoachPageState extends State<RunCoachPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Run With Me 🏃‍♀️", style: TextStyle(color: Colors.white, fontSize: 24)),
+            const Text("Run With Me 🏃‍♀️",
+                style: TextStyle(color: Colors.white, fontSize: 24)),
             const SizedBox(height: 40),
             ElevatedButton(
               onPressed: isRunning ? null : startRun,
@@ -393,7 +403,8 @@ class _RunCoachPageState extends State<RunCoachPage> {
                 padding: const EdgeInsets.all(32),
                 backgroundColor: Colors.green,
               ),
-              child: const Icon(Icons.play_arrow, color: Colors.white, size: 32),
+              child:
+                  const Icon(Icons.play_arrow, color: Colors.white, size: 32),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
