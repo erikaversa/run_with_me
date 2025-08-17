@@ -1,8 +1,10 @@
-import 'dart:io';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:flutter_test/flutter_test.dart';
 
-import '../lib/services/vocal_avatar.dart';
+import 'dart:io';
+import 'package:hive/hive.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/foundation.dart';
+
+import 'package:run_with_me_voice/services/vocal_avatar.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +46,9 @@ void main() {
     test('Phrase generation works with stages', () async {
       final avatar = await VocalAvatar.load();
       final phrase = avatar.choosePhrase('start');
-      print('Start phrase: $phrase');
+      if (kDebugMode) {
+        debugPrint('Start phrase: $phrase');
+      }
       expect(phrase.isNotEmpty, true);
     });
   });

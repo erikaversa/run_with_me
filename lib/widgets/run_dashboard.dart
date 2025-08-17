@@ -12,18 +12,18 @@ class RunDashboard extends StatelessWidget {
     return Column(
       children: [
         // 📊 Statistiche principali
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: const [
+          children: [
             StatCard(label: 'Distanza', value: '5.3 km', emoji: '📏'),
             StatCard(label: 'Tempo', value: '32:20', emoji: '⏱️'),
             StatCard(label: 'Passo', value: '6:05 /km', emoji: '👟'),
           ],
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         // ❤️‍🔥 Stato Salute (card compatta)
-        HealthStatusCard(heartRate: 145, vo2Effort: 82),
-        SizedBox(height: 30),
+        const HealthStatusCard(heartRate: 145, vo2Effort: 82),
+        const SizedBox(height: 30),
         // 🎮 Pulsanti azione
         Wrap(
           alignment: WrapAlignment.center,

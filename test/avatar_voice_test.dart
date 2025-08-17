@@ -1,10 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/foundation.dart';
 import 'package:run_with_me_voice/voice_avatar.dart';
 
 class ConsoleVoiceAvatar extends VoiceAvatar {
   @override
   Future<void> speak(String text) async {
-    print('Avatar says: $text');
+    // Only print in debug mode
+    if (kDebugMode) {
+      debugPrint('Avatar says: $text');
+    }
   }
 }
 

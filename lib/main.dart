@@ -164,7 +164,7 @@ class _RunHomePageState extends State<RunHomePage> {
                 ),
                 _CircleStat(
                   label: 'Pace',
-                  value: pace > 0 ? pace.toStringAsFixed(2) + ' min/km' : '--',
+                  value: pace > 0 ? '${pace.toStringAsFixed(2)} min/km' : '--',
                 ),
                 _CircleStat(label: 'Time', value: _formatDuration(runDuration)),
               ],
@@ -396,7 +396,7 @@ class _RunCoachPageState extends State<RunCoachPage> {
       secondsElapsed += 30;
       // Simulated values for now
       final heartRate = 135 + (secondsElapsed ~/ 60); // increasing HR
-      final pace = 7.5; // constant pace
+      const pace = 7.5; // constant pace
       final time = Duration(seconds: secondsElapsed);
       coach.evaluate(
         heartRate: heartRate,

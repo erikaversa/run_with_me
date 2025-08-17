@@ -6,7 +6,7 @@ void main() {
   testWidgets('HealthStatusCard displays correct values and color',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: Scaffold(body: HealthStatusCard(heartRate: 150, vo2Effort: 80)),
       ),
     );
@@ -21,14 +21,17 @@ void main() {
   testWidgets('HealthStatusCard shows red zone if out of range',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: Scaffold(body: HealthStatusCard(heartRate: 200, vo2Effort: 40)),
       ),
     );
 
     final icon = tester.widget<Icon>(find.byIcon(Icons.circle));
+    final color = icon.color ?? Colors.transparent;
+    final redValue =
+        (color.r * 255.0).round() & 0xff; // Use recommended replacement
     expect(
-      (icon.color ?? Colors.transparent).red,
+      redValue,
       greaterThan(200),
     ); // Should be red
   });

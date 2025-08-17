@@ -83,8 +83,8 @@ class _VocalAvatarDevWidgetState extends State<VocalAvatarDevWidget> {
           ],
         ),
         const SizedBox(height: 10),
-        Text("🧠 Feedback Score: ",
-            style: const TextStyle(fontWeight: FontWeight.w500)),
+        const Text("🧠 Feedback Score: ",
+            style: TextStyle(fontWeight: FontWeight.w500)),
         Text("${avatar.feedbackScore}"),
         const SizedBox(height: 10),
         if (lastSpoken.isNotEmpty)

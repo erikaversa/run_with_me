@@ -65,7 +65,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  path_provider: ^2.1.1
+  flutter_lints: ^3.0.0
 
 
 flutter:
@@ -75,7 +75,6 @@ flutter:
     #- assets/images/
     #- assets/sounds/
     #- assets/fonts/
-
   fonts:
     - family: NotoSans
       fonts:
