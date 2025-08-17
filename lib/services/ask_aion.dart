@@ -1,8 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:run_with_me_voice/voice_avatar.dart';
+import 'package:run_with_me_voice/avatar_voice.dart';
 
-Future<void> askAionAndSpeak(String question, VoiceAvatar avatar) async {
+Future<void> askAionAndSpeak(String question, TtsAvatarVoice avatar) async {
   var response = await http.post(
     Uri.parse(
         "http://localhost:11434"), // Replace with your server IP if needed

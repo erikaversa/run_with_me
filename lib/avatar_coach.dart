@@ -1,4 +1,4 @@
-import 'voice_avatar.dart';
+import 'avatar_voice.dart';
 
 class RunZone {
   static const int minSafeHR = 120;
@@ -8,7 +8,7 @@ class RunZone {
 }
 
 class AvatarCoach {
-  final VoiceAvatar voice;
+  final TtsAvatarVoice voice;
 
   AvatarCoach(this.voice);
 

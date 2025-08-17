@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:run_with_me_voice/voice_avatar.dart';
+import 'package:run_with_me_voice/avatar_voice.dart';
 import 'package:run_with_me_voice/avatar_coach.dart';
 import 'widgets/health_status_card.dart';
 import 'services/voice_service.dart';
@@ -375,7 +375,7 @@ class RunCoachPage extends StatefulWidget {
 }
 
 class _RunCoachPageState extends State<RunCoachPage> {
-  late final VoiceAvatar voice;
+  late final TtsAvatarVoice voice;
   late final AvatarCoach coach;
   Timer? timer;
   int secondsElapsed = 0;
@@ -384,7 +384,7 @@ class _RunCoachPageState extends State<RunCoachPage> {
   @override
   void initState() {
     super.initState();
-    voice = VoiceAvatar();
+    voice = TtsAvatarVoice();
     coach = AvatarCoach(voice);
   }
 

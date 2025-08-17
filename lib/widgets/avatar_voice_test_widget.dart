@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:run_with_me_voice/voice_avatar.dart';
+import 'package:run_with_me_voice/avatar_voice.dart';
 
 class AvatarVoiceTestWidget extends StatefulWidget {
   const AvatarVoiceTestWidget({super.key});
@@ -9,7 +9,7 @@ class AvatarVoiceTestWidget extends StatefulWidget {
 }
 
 class _AvatarVoiceTestWidgetState extends State<AvatarVoiceTestWidget> {
-  final VoiceAvatar avatar = VoiceAvatar();
+  final TtsAvatarVoice avatar = TtsAvatarVoice();
   final TextEditingController _controller = TextEditingController();
 
   @override

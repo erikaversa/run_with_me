@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:run_with_me_voice/voice_avatar.dart';
+import 'package:run_with_me_voice/avatar_voice.dart';
 import '../services/ask_aion.dart';
 
 class AskAionButton extends StatefulWidget {
-  final VoiceAvatar avatar;
+  final TtsAvatarVoice avatar;
   const AskAionButton({super.key, required this.avatar});
 
   @override

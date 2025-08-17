@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/foundation.dart';
-import 'package:run_with_me_voice/voice_avatar.dart';
+import 'package:run_with_me_voice/avatar_voice.dart';
 
-class ConsoleVoiceAvatar extends VoiceAvatar {
+class ConsoleVoiceAvatar extends TtsAvatarVoice {
   @override
   Future<void> speak(String text) async {
     // Only print in debug mode
