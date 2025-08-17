@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:run_with_me_voice/voice_avatar.dart';
 import 'package:run_with_me_voice/avatar_coach.dart';
@@ -41,6 +42,8 @@ class _RunHomePageState extends State<RunHomePage> {
   String goal = '5K';
   late final Stopwatch _stopwatch;
   late final Ticker _ticker;
+  Timer? _simTimer;
+  final Random _rand = Random();
 
   @override
   void initState() {
@@ -50,6 +53,7 @@ class _RunHomePageState extends State<RunHomePage> {
     VocalAvatar.load().then((loaded) {
       setState(() => vocalAvatar = loaded);
     });
+    _startSimulation();
   }
 
   void _onTick(Duration elapsed) {
@@ -63,6 +67,21 @@ class _RunHomePageState extends State<RunHomePage> {
     }
   }
 
+  void _startSimulation() {
+    _simTimer?.cancel();
+    _simTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      setState(() {
+        runDuration += const Duration(seconds: 1);
+        distanceKm += 0.01 + _rand.nextDouble() * 0.02;
+        pace = 5.0 + _rand.nextDouble() * 3.0;
+      });
+    });
+  }
+
+  void _pauseSimulation() {
+    _simTimer?.cancel();
+  }
+
   void _startRun() {
     setState(() {
       isRunning = true;
@@ -73,6 +92,7 @@ class _RunHomePageState extends State<RunHomePage> {
       _stopwatch.start();
       _ticker.start();
     });
+    _startSimulation();
   }
 
   void _pauseRun() {
@@ -81,6 +101,7 @@ class _RunHomePageState extends State<RunHomePage> {
       _stopwatch.stop();
       _ticker.stop();
     });
+    _pauseSimulation();
   }
 
   void _resumeRun() {
@@ -89,6 +110,7 @@ class _RunHomePageState extends State<RunHomePage> {
       _stopwatch.start();
       _ticker.start();
     });
+    _startSimulation();
   }
 
   void _stopRun() {
@@ -98,10 +120,12 @@ class _RunHomePageState extends State<RunHomePage> {
       _stopwatch.stop();
       _ticker.stop();
     });
+    _pauseSimulation();
   }
 
   @override
   void dispose() {
+    _simTimer?.cancel();
     _stopwatch.stop();
     _ticker.dispose();
     super.dispose();
