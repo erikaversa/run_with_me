@@ -59,6 +59,9 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
 
+  # 🎤 Speech to Text
+  speech_to_text: ^6.6.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
