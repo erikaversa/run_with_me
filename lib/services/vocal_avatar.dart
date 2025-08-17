@@ -12,7 +12,7 @@ class VocalAvatar {
   }) : vocab = vocab ??
             {
               'start': ["Let's go!", "Ready, Erika? Let's run."],
-              'mid': ["You're doing great!", "Keep it steady."],
+              'mid': ["You're doing great!", "Keep going bella."],
               'end': ["Almost there!", "Final stretch — fly!"],
             };
 

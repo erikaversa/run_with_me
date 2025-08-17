@@ -17,10 +17,10 @@ export default function HomePage() {
 
   // Simulation test data
   const simulationSessions = [
-    { date: "2025-06-02", distance_km: 5.0, duration_min: 38, pace_min_per_km: "7:36" },
-    { date: "2025-06-03", distance_km: 6.2, duration_min: 45, pace_min_per_km: "7:15" },
-    { date: "2025-06-04", distance_km: 4.5, duration_min: 32, pace_min_per_km: "7:07" },
-    { date: "2025-06-05", distance_km: 5.8, duration_min: 42, pace_min_per_km: "7:14" },
+    { date: "2025-06-02", distance_km: 10.0, duration_min: 38, pace_min_per_km: "7:36" },
+    { date: "2025-06-03", distance_km: 3.2, duration_min: 45, pace_min_per_km: "7:15" },
+    { date: "2025-06-04", distance_km: 20.5, duration_min: 32, pace_min_per_km: "7:07" },
+    { date: "2025-06-05", distance_km: 12.8, duration_min: 42, pace_min_per_km: "7:14" },
     { date: "2025-06-06", distance_km: 7.0, duration_min: 50, pace_min_per_km: "7:08" },
   ];
 

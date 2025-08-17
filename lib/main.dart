@@ -236,9 +236,9 @@ class _RunHomePageState extends State<RunHomePage> {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                voice.speak("This is a test of the avatar voice.");
+                voice.speak("Ciao Bella.");
               },
-              child: const Text("Test Voice"),
+              child: const Text("Test"),
             ),
           ],
         ),

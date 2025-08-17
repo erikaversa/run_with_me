@@ -14,44 +14,36 @@ class TtsAvatarVoice extends AvatarVoice {
     _tts.setLanguage("en-US");
     _tts.setPitch(1.1); // Slightly higher for a more natural female sound
     _tts.setSpeechRate(0.5);
-    _setFemaleVoice();
-  }
-
-  Future<void> _setFemaleVoice() async {
-    try {
-      final voices = await _tts.getVoices;
-      final femaleVoice = voices.firstWhere(
-        (v) =>
-            (v['locale'] == 'en-US' || v['locale'] == 'en_US') &&
-            (v['name']?.toLowerCase().contains('female') ?? false),
-        orElse: () => voices.isNotEmpty ? voices.first : null,
-      );
-      if (femaleVoice != null) {
-        await _tts.setVoice(femaleVoice);
-      } else {
-        // Log or handle no female voice found
-        print('No female voice found, using default voice.');
-      }
-    } catch (e) {
-      print('Error setting female voice: $e');
-    }
+    _setVoice('male');
   }
 
   @override
   Future<void> speak(String text) async {
-    try {
-      await _tts.speak(text);
-    } catch (e) {
-      print('Error during speak: $e');
-    }
+    await _tts.speak(text);
   }
 
   @override
   Future<void> stop() async {
+    await _tts.stop();
+  }
+
+  Future<void> _setVoice(String gender) async {
     try {
-      await _tts.stop();
+      final voices = await _tts.getVoices;
+      final selectedVoice = voices.firstWhere(
+        (v) =>
+            (v['locale'] == 'en-US' || v['locale'] == 'en_US') &&
+            (v['name']?.toLowerCase().contains(gender) ?? false),
+        orElse: () => voices.isNotEmpty ? voices.first : null,
+      );
+      if (selectedVoice != null) {
+        await _tts.setVoice(selectedVoice);
+      } else {
+        // Log or handle no matching voice found
+        print('No $gender voice found, using default voice.');
+      }
     } catch (e) {
-      print('Error during stop: $e');
+      print('Error setting $gender voice: $e');
     }
   }
 }
