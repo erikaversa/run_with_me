@@ -1,4 +1,5 @@
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:flutter/foundation.dart';
 
 /// Abstract base for avatar voice logic
 abstract class AvatarVoice {
@@ -10,11 +11,12 @@ abstract class AvatarVoice {
 class TtsAvatarVoice extends AvatarVoice {
   final FlutterTts _tts = FlutterTts();
 
-  TtsAvatarVoice() {
-    _tts.setLanguage("en-US");
-    _tts.setPitch(1.1); // Slightly higher for a more natural female sound
-    _tts.setSpeechRate(0.5);
-    _setVoice('male');
+  // Call this after constructing the object to initialize voice settings
+  Future<void> init({String gender = 'female'}) async {
+    await _tts.setLanguage("en-US");
+    await _tts.setPitch(1.1); // Slightly higher for a more natural female sound
+    await _tts.setSpeechRate(0.5);
+    await setVoice(gender);
   }
 
   @override
@@ -27,7 +29,8 @@ class TtsAvatarVoice extends AvatarVoice {
     await _tts.stop();
   }
 
-  Future<void> _setVoice(String gender) async {
+  // Public method to change voice gender at runtime
+  Future<void> setVoice(String gender) async {
     try {
       final voices = await _tts.getVoices;
       final selectedVoice = voices.firstWhere(
@@ -38,12 +41,12 @@ class TtsAvatarVoice extends AvatarVoice {
       );
       if (selectedVoice != null) {
         await _tts.setVoice(selectedVoice);
+        debugPrint('Set $gender voice: \\${selectedVoice['name']}');
       } else {
-        // Log or handle no matching voice found
-        print('No $gender voice found, using default voice.');
+        debugPrint('No $gender voice found, using default voice.');
       }
     } catch (e) {
-      print('Error setting $gender voice: $e');
+      debugPrint('Error setting $gender voice: $e');
     }
   }
 }
