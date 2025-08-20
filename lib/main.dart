@@ -1,13 +1,29 @@
+// ============================================
+// 🟡 DART CORE IMPORTS (Sistema base Flutter)
+// ============================================
 import 'dart:async';
 import 'dart:math';
+
+// ============================================
+// 🔵 FLUTTER PACKAGES (Librerie esterne)
+// ============================================
 import 'package:flutter/material.dart';
 import 'package:run_with_me_voice/avatar_voice.dart';
 import 'package:run_with_me_voice/avatar_coach.dart';
-import 'widgets/health_status_card.dart';
-import 'services/voice_service.dart';
-import 'services/vocal_avatar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+// ============================================
+// 🟣 MY SERVICES (I miei servizi custom)
+// ============================================
+import 'services/voice_service.dart';
+import 'services/vocal_avatar.dart';
+
+// ============================================
+// 🔵 MY UI WIDGETS (I miei widget UI)
+// ============================================
+import 'widgets/health_status_card.dart';
+
+// 🟡 MAIN FUNCTION - Entry point dell'app
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
@@ -15,6 +31,7 @@ void main() async {
   runApp(const RunWithMeApp());
 }
 
+// 🔵 ROOT WIDGET - App principale
 class RunWithMeApp extends StatelessWidget {
   const RunWithMeApp({super.key});
 
@@ -24,6 +41,7 @@ class RunWithMeApp extends StatelessWidget {
   }
 }
 
+// 🔵 MAIN PAGE WIDGET - Pagina principale
 class RunHomePage extends StatefulWidget {
   const RunHomePage({super.key});
 
@@ -31,20 +49,27 @@ class RunHomePage extends StatefulWidget {
   State<RunHomePage> createState() => _RunHomePageState();
 }
 
+// 🟢 STATE CLASS - Gestione stato e logica business
 class _RunHomePageState extends State<RunHomePage> {
+  // 🟣 MY SERVICES - I miei servizi custom
   final VoiceService voice = VoiceService();
   VocalAvatar? vocalAvatar;
+  
+  // 🟠 STATE VARIABLES - Variabili di stato
   bool isRunning = false;
   bool isPaused = false;
   Duration runDuration = Duration.zero;
   double distanceKm = 0.0;
   double pace = 6.0; // min/km
   String goal = '5K';
+  
+  // 🟡 SYSTEM VARIABLES - Variabili di sistema
   late final Stopwatch _stopwatch;
   late final Ticker _ticker;
   Timer? _simTimer;
   final Random _rand = Random();
 
+  // 🟡 LIFECYCLE METHODS - Metodi del ciclo di vita
   @override
   void initState() {
     super.initState();
@@ -56,6 +81,15 @@ class _RunHomePageState extends State<RunHomePage> {
     _startSimulation();
   }
 
+  @override
+  void dispose() {
+    _simTimer?.cancel();
+    _stopwatch.stop();
+    _ticker.dispose();
+    super.dispose();
+  }
+
+  // 🟡 TICKER CALLBACK - Callback del timer
   void _onTick(Duration elapsed) {
     if (isRunning && !isPaused) {
       setState(() {
@@ -67,21 +101,7 @@ class _RunHomePageState extends State<RunHomePage> {
     }
   }
 
-  void _startSimulation() {
-    _simTimer?.cancel();
-    _simTimer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() {
-        runDuration += const Duration(seconds: 1);
-        distanceKm += 0.01 + _rand.nextDouble() * 0.02;
-        pace = 5.0 + _rand.nextDouble() * 3.0;
-      });
-    });
-  }
-
-  void _pauseSimulation() {
-    _simTimer?.cancel();
-  }
-
+  // 🟢 BUSINESS LOGIC - Logica principale dell'app
   void _startRun() {
     setState(() {
       isRunning = true;
@@ -123,20 +143,23 @@ class _RunHomePageState extends State<RunHomePage> {
     _pauseSimulation();
   }
 
-  @override
-  void dispose() {
+  // 🟢 SIMULATION LOGIC - Logica di simulazione
+  void _startSimulation() {
     _simTimer?.cancel();
-    _stopwatch.stop();
-    _ticker.dispose();
-    super.dispose();
+    _simTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      setState(() {
+        runDuration += const Duration(seconds: 1);
+        distanceKm += 0.01 + _rand.nextDouble() * 0.02;
+        pace = 5.0 + _rand.nextDouble() * 3.0;
+      });
+    });
   }
 
-  String _formatDuration(Duration d) {
-    final minutes = d.inMinutes.remainder(60).toString().padLeft(2, '0');
-    final seconds = d.inSeconds.remainder(60).toString().padLeft(2, '0');
-    return '${d.inHours > 0 ? '${d.inHours}:' : ''}$minutes:$seconds';
+  void _pauseSimulation() {
+    _simTimer?.cancel();
   }
 
+  // 🟣 VOICE INTEGRATION - Integrazione servizi vocali
   void _motivate() {
     if (vocalAvatar == null) return;
     final phrase = vocalAvatar!.choosePhrase('mid');
@@ -144,6 +167,14 @@ class _RunHomePageState extends State<RunHomePage> {
     vocalAvatar!.save();
   }
 
+  // 🔴 UTILITY FUNCTIONS - Funzioni di utilità
+  String _formatDuration(Duration d) {
+    final minutes = d.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = d.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return '${d.inHours > 0 ? '${d.inHours}:' : ''}$minutes:$seconds';
+  }
+
+  // 🔵 UI BUILD METHOD - Costruzione interfaccia utente
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,7 +185,7 @@ class _RunHomePageState extends State<RunHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Distance, Pace, Time
+            // 🔵 STATS DISPLAY - Visualizzazione statistiche
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -170,7 +201,8 @@ class _RunHomePageState extends State<RunHomePage> {
               ],
             ),
             const SizedBox(height: 24),
-            // Goal
+            
+            // 🔵 GOAL DISPLAY - Visualizzazione obiettivo
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -195,20 +227,21 @@ class _RunHomePageState extends State<RunHomePage> {
               ],
             ),
             const SizedBox(height: 24),
-            // Health Status
+            
+            // 🔵 HEALTH STATUS WIDGET - Widget stato salute
             const HealthStatusCard(heartRate: 150, vo2Effort: 80),
             const Spacer(),
-            // Buttons
+            
+            // 🔵 ACTION BUTTONS - Pulsanti di azione
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _CircleButton(
                   icon: Icons.directions_run,
                   label: 'Run',
-                  color: Colors.green, // Changed to green
+                  color: Colors.green,
                   onPressed: isRunning ? null : _startRun,
                 ),
-                // Voice Motivation Button moved here
                 _CircleButton(
                   icon: Icons.record_voice_over,
                   label: 'Motivate',
@@ -234,6 +267,8 @@ class _RunHomePageState extends State<RunHomePage> {
               ],
             ),
             const SizedBox(height: 24),
+            
+            // 🔵 TEST BUTTON - Pulsante di test
             ElevatedButton(
               onPressed: () {
                 voice.speak("Ciao Bella.");
@@ -247,14 +282,20 @@ class _RunHomePageState extends State<RunHomePage> {
   }
 }
 
+// ============================================
+// 🔴 UTILITY CLASSES - Classi di utilità
+// ============================================
+
 class Ticker {
   final void Function(Duration) onTick;
   Duration _elapsed = Duration.zero;
   bool _isActive = false;
   late final Stopwatch _sw;
+
   Ticker(this.onTick) {
     _sw = Stopwatch();
   }
+
   void start() {
     _isActive = true;
     _sw.start();
@@ -287,17 +328,23 @@ class Ticker {
   }
 }
 
+// ============================================
+// 🟤 REUSABLE WIDGETS - Widget riutilizzabili
+// ============================================
+
 class _CircleButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final Color color;
   final VoidCallback? onPressed;
+
   const _CircleButton({
     required this.icon,
     required this.label,
     required this.color,
     this.onPressed,
   });
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -326,7 +373,9 @@ class _CircleButton extends StatelessWidget {
 class _CircleStat extends StatelessWidget {
   final String label;
   final String value;
+
   const _CircleStat({required this.label, required this.value});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -367,6 +416,10 @@ class _CircleStat extends StatelessWidget {
   }
 }
 
+// ============================================
+// 🔵 ADDITIONAL COACH PAGE - Pagina coach aggiuntiva
+// ============================================
+
 class RunCoachPage extends StatefulWidget {
   const RunCoachPage({super.key});
 
@@ -374,13 +427,18 @@ class RunCoachPage extends StatefulWidget {
   State<RunCoachPage> createState() => _RunCoachPageState();
 }
 
+// 🟢 COACH PAGE STATE - Stato pagina coach
 class _RunCoachPageState extends State<RunCoachPage> {
+  // 🟣 SERVICES - Servizi vocali
   late final TtsAvatarVoice voice;
   late final AvatarCoach coach;
+  
+  // 🟠 STATE VARIABLES - Variabili di stato
   Timer? timer;
   int secondsElapsed = 0;
   bool isRunning = false;
 
+  // 🟡 LIFECYCLE - Ciclo di vita
   @override
   void initState() {
     super.initState();
@@ -388,10 +446,18 @@ class _RunCoachPageState extends State<RunCoachPage> {
     coach = AvatarCoach(voice);
   }
 
+  @override
+  void dispose() {
+    timer?.cancel();
+    voice.stop();
+    super.dispose();
+  }
+
+  // 🟢 BUSINESS LOGIC - Logica business
   void startRun() {
     if (isRunning) return;
     setState(() => isRunning = true);
-    voice.speak("Starting your run. I’m here with you.");
+    voice.speak("Starting your run. I'm here with you.");
     timer = Timer.periodic(const Duration(seconds: 30), (_) {
       secondsElapsed += 30;
       // Simulated values for now
@@ -413,13 +479,7 @@ class _RunCoachPageState extends State<RunCoachPage> {
     voice.speak("Run stopped. See you next time!");
   }
 
-  @override
-  void dispose() {
-    timer?.cancel();
-    voice.stop();
-    super.dispose();
-  }
-
+  // 🔵 UI BUILD - Costruzione UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
